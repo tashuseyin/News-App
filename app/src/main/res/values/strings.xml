@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">News App</string>
+
+
+    <string name="breaking">Breaking</string>
+    <string name="all_news">All News</string>
+    <string name="favorites">Favorites</string>
+</resources>
