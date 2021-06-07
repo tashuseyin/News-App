@@ -1,60 +1,62 @@
 package com.example.newsapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.newsapp.R
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.newsapp.adapter.BreakingNewsAdapter
+import com.example.newsapp.api.RetrofitClient
+import com.example.newsapp.databinding.FragmentBreakingBinding
+import com.example.newsapp.model.Article
+import com.example.newsapp.model.NewResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BreakingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BreakingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    private var _binding: FragmentBreakingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_breaking, container, false)
+    ): View {
+        _binding = FragmentBreakingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BreakingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BreakingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerview.layoutManager = LinearLayoutManager(context)
+        binding.recyclerview.setHasFixedSize(true)
+
+        getBreakingNews { articleList: List<Article> ->
+            binding.recyclerview.adapter = BreakingNewsAdapter(articleList)
+        }
+    }
+
+    private fun getBreakingNews(callback: (List<Article>) -> Unit) {
+        RetrofitClient.api.getBreakingNews().enqueue(object : Callback<NewResponse> {
+            override fun onResponse(call: Call<NewResponse>, response: Response<NewResponse>) {
+                return callback(response.body()!!.articles)
             }
+
+            override fun onFailure(call: Call<NewResponse>, t: Throwable) {
+                Log.d("TAG", "Veriyi Alamadım")
+            }
+        })
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
