@@ -37,8 +37,16 @@ class BreakingFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(context)
         binding.recyclerview.setHasFixedSize(true)
 
+
+        binding.LoadingProgressbar.visibility = View.VISIBLE
+        binding.LoadingText.visibility = View.VISIBLE
+
+
         getBreakingNews { articleList: List<Article> ->
             binding.recyclerview.adapter = BreakingNewsAdapter(articleList)
+
+            binding.LoadingProgressbar.visibility = View.INVISIBLE
+            binding.LoadingText.visibility = View.INVISIBLE
         }
     }
 

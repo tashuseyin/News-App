@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.newsapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,13 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigation: BottomNavigationView = binding.bottomNavigaiton
         val navController = findNavController(R.id.navigation_fragment_activity_main)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.breakingFragment, R.id.allNewsFragment, R.id.favoritesFragment
-            )
-        )
+        val appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.breakingFragment,
+            R.id.allNewsFragment,
+            R.id.favoritesFragment
+        ).build()
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
     }
 }

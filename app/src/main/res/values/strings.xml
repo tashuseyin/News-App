@@ -5,4 +5,5 @@
     <string name="breaking">Breaking</string>
     <string name="all_news">All News</string>
     <string name="favorites">Favorites</string>
+    <string name="loading">Loading...</string>
 </resources>
