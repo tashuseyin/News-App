@@ -1,4 +1,4 @@
-package com.example.newsapp.ui
+package com.example.newsapp.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,15 +10,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BreakingNewsViewModel : ViewModel() {
+class BreakingNewsViewModel() : ViewModel() {
 
     val news: MutableLiveData<List<Article>> by lazy {
         MutableLiveData<List<Article>>()
     }
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    var isRequested = false
+    private var isRequested = false
 
     fun getBreakingNews() {
         if (isRequested) return else isRequested = true
@@ -35,5 +34,8 @@ class BreakingNewsViewModel : ViewModel() {
             }
         })
     }
+
+
+
 
 }

@@ -2,15 +2,15 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    app:cardCornerRadius="3dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="4dp">
 
     <ImageView
         android:id="@+id/imageBreaking"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
@@ -27,7 +27,7 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-    <TextView
+        <TextView
             android:id="@+id/breakingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,8 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:src="@drawable/ic_baseline_favorite_border_24"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_baseline_favorite_border_24" />
 
 
 </androidx.cardview.widget.CardView>
