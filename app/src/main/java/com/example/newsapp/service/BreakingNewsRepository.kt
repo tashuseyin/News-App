@@ -5,7 +5,10 @@ import com.example.newsapp.model.Article
 
 class BreakingNewsRepository {
 
-    private val breakingNewsDao = BreakingNewsDatabase.getDatabase()?.breakingNewsDao()
+    private val breakingNewsDao by lazy {
+        BreakingNewsDatabase.getDatabase()?.breakingNewsDao()
+    }
+
 
     suspend fun insert(article: Article){
         breakingNewsDao?.insertBreakingNews(article)

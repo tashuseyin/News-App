@@ -37,7 +37,6 @@ class BreakingNewsViewModel : ViewModel() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<NewResponse>, t: Throwable) {
                 isLoading.value = false
                 Log.d("TAG", "Veriyi Alamadım")
