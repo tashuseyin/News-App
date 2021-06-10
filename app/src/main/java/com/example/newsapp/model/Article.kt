@@ -16,8 +16,8 @@ data class Article(
     val description: String,
     @SerializedName("publishedAt")
     val publishedAt: String,
-    @SerializedName("source")
-    val source: Source,
+//    @SerializedName("source")
+//    val source: Source,
     @SerializedName("title")
     val title: String,
     @SerializedName("url")

@@ -8,5 +8,5 @@ import com.example.newsapp.model.Article
 interface BreakingNewsDao {
 
     @Insert
-    fun insertBreakingNews(article: Article)
+    suspend fun insertBreakingNews(article: Article)
 }
