@@ -1,6 +1,5 @@
 package com.example.newsapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,12 +20,15 @@ class BreakingNewsViewModel : ViewModel() {
         MutableLiveData<List<Article>>()
     }
 
+
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private var isRequested = false
+
 
     fun getBreakingNews() {
         if (isRequested) return else isRequested = true
         isLoading.value = true
+
         RetrofitClient.api.getBreakingNews().enqueue(object : Callback<NewResponse> {
             override fun onResponse(call: Call<NewResponse>, response: Response<NewResponse>) {
                 isLoading.value = false
@@ -39,13 +41,16 @@ class BreakingNewsViewModel : ViewModel() {
             }
             override fun onFailure(call: Call<NewResponse>, t: Throwable) {
                 isLoading.value = false
-                Log.d("TAG", "Veriyi Alamadım")
             }
         })
     }
 
-    suspend fun insert(article: Article) =
+
+    suspend fun insert(article: Article) {
         repository.insert(article)
+    }
 
 
 }
+
+

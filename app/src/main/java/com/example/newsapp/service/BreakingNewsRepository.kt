@@ -10,7 +10,10 @@ class BreakingNewsRepository {
     }
 
 
-    suspend fun insert(article: Article){
+    suspend fun insert(article: Article) {
         breakingNewsDao?.insertBreakingNews(article)
     }
+
+    suspend fun getAllArticle(): List<Article>? =
+        breakingNewsDao?.getAllBreakingNews()
 }
