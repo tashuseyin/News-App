@@ -13,16 +13,14 @@ class BreakingNewsViewModel : ViewModel() {
 
     private val repository = BreakingNewsRepository
 
-    var _news: LiveData<List<Article>>? = getArticle()
+    private var _news: LiveData<List<Article>>? = getArticle()
     val news = _news
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    private var isRequested = false
-    private var currentData: List<Article>? = null
 
 
     fun getBreakingNews() {
-        if (isRequested) return else isRequested = true
+
         isLoading.value = true
         Request.getArticleNews { articleList ->
             isLoading.value = false
@@ -34,18 +32,11 @@ class BreakingNewsViewModel : ViewModel() {
         }
     }
 
-
     suspend fun insert(article: Article) {
         repository.insert(article)
     }
 
     private fun getArticle(): LiveData<List<Article>>? = repository.getAllArticle()
-
-    suspend fun replaceArticle(article: Article) {
-        repository.replaceArticle(article)
-    }
-
-
 
     suspend fun updateNews(article: Article) {
         repository.updateNews(article)

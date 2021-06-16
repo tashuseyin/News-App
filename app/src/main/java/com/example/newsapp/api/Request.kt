@@ -12,7 +12,6 @@ object Request {
         RetrofitClient.api.getBreakingNews().enqueue(object : Callback<NewResponse>{
             override fun onResponse(call: Call<NewResponse>, response: Response<NewResponse>) {
                 val articleList = response.body()?.articles
-
                 if (articleList != null){
                     onResponse(articleList)
                 }

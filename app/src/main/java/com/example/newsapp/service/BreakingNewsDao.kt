@@ -14,9 +14,6 @@ interface BreakingNewsDao {
     fun getAllBreakingNews() : LiveData<List<Article>>
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun replaceBreakingNews(article: Article)
-
     @Query("SELECT * FROM Article WHERE isFavorites")
     fun  isFavoriteBreakingNews() : LiveData<List<Article>>
 

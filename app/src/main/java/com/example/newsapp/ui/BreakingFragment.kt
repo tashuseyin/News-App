@@ -59,7 +59,6 @@ class BreakingFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

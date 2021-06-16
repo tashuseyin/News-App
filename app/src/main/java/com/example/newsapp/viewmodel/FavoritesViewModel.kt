@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.newsapp.model.Article
 import com.example.newsapp.service.BreakingNewsRepository
 
-class FavoritesViewModel : ViewModel(){
+class FavoritesViewModel : ViewModel() {
 
     private val repository = BreakingNewsRepository
 

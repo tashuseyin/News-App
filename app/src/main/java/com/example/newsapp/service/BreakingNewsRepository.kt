@@ -18,10 +18,6 @@ object BreakingNewsRepository {
     fun getAllArticle(): LiveData<List<Article>>? =
         breakingNewsDao?.getAllBreakingNews()
 
-    suspend fun replaceArticle(article: Article){
-        breakingNewsDao?.replaceBreakingNews(article)
-    }
-
     fun favoriteArticle() = breakingNewsDao?.isFavoriteBreakingNews()
 
     suspend fun updateNews(article: Article) = breakingNewsDao?.updateNews(article)

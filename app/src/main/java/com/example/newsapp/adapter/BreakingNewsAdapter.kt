@@ -19,14 +19,34 @@ class BreakingNewsAdapter(private val onItemClickListener: (Int) -> Unit) :
         holder.bind(getItem(position), onItemClickListener)
     }
 
+    override fun onBindViewHolder(
+        holder: BreakingNewsViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            if (payloads[0] == true) {
+                holder.bindChanged(getItem(position), onItemClickListener,getItem(position).isFavorites)
+            }
+        }
+    }
+
     class DiffCallback : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.title == newItem.title
         }
 
         override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem == newItem
         }
+
+        override fun getChangePayload(oldItem: Article, newItem: Article): Any? {
+            return if (oldItem.isFavorites != newItem.isFavorites) true
+            else null
+        }
+
     }
 
 }
