@@ -19,5 +19,8 @@ class BreakingNewsViewHolder(private val binding: BreakingRowitemBinding) :
         } else {
             binding.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24)
         }
+        binding.favoriteButton.setOnClickListener {
+            onItemClickListener(adapterPosition)
+        }
     }
 }

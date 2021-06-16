@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentBreakingBinding
-import com.example.newsapp.model.Article
 import com.example.newsapp.viewmodel.BreakingNewsViewModel
+import kotlinx.coroutines.launch
 
 
 class BreakingFragment : Fragment() {
 
-    private lateinit var articleList: List<Article>
     private lateinit var adapter: BreakingNewsAdapter
     private lateinit var recyclerView: RecyclerView
 
@@ -38,28 +37,26 @@ class BreakingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = binding.recyclerview
+
         viewModel = ViewModelProvider(this).get(BreakingNewsViewModel::class.java)
-        viewModel.apply {
-            isLoading.observe(viewLifecycleOwner) {
-                binding.LoadingText.isVisible = it
-                binding.LoadingProgressbar.isVisible = it
-            }
 
-            getBreakingNews()
-            news.observe(viewLifecycleOwner) {
-                articleList = it
-                adapter = BreakingNewsAdapter {
-                    adapter.submitList(null)
-                    adapter.submitList(articleList.toList())
-                }
-                adapter.submitList(articleList.toList())
-                recyclerView.layoutManager = LinearLayoutManager(context)
-                recyclerView.adapter = adapter
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.LoadingText.isVisible = it
+            binding.LoadingProgressbar.isVisible = it
+        }
+        viewModel.getBreakingNews()
 
+        adapter = BreakingNewsAdapter { position ->
+            val currentNews = adapter.currentList[position]
+            val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
+            lifecycleScope.launch {
+                viewModel.updateNews(updatedArticle)
             }
         }
-
-
+        viewModel.news?.observe(viewLifecycleOwner) {
+            adapter.submitList(it.toList())
+        }
+        recyclerView.adapter = adapter
     }
 
 
@@ -67,5 +64,4 @@ class BreakingFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

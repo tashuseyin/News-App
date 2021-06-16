@@ -1,48 +1,37 @@
 package com.example.newsapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.api.RetrofitClient
+import com.example.newsapp.api.Request
 import com.example.newsapp.model.Article
-import com.example.newsapp.model.NewResponse
 import com.example.newsapp.service.BreakingNewsRepository
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class BreakingNewsViewModel : ViewModel() {
 
-    private val repository = BreakingNewsRepository()
+    private val repository = BreakingNewsRepository
 
-    val news: MutableLiveData<List<Article>> by lazy {
-        MutableLiveData<List<Article>>()
-    }
-
+    var _news: LiveData<List<Article>>? = getArticle()
+    val news = _news
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private var isRequested = false
+    private var currentData: List<Article>? = null
 
 
     fun getBreakingNews() {
         if (isRequested) return else isRequested = true
         isLoading.value = true
-
-        RetrofitClient.api.getBreakingNews().enqueue(object : Callback<NewResponse> {
-            override fun onResponse(call: Call<NewResponse>, response: Response<NewResponse>) {
-                isLoading.value = false
-                news.value = response.body()?.articles
-                response.body()?.articles?.forEach {
-                    viewModelScope.launch {
-                        insert(it)
-                    }
+        Request.getArticleNews { articleList ->
+            isLoading.value = false
+            viewModelScope.launch {
+                articleList?.forEach {
+                    insert(it)
                 }
             }
-            override fun onFailure(call: Call<NewResponse>, t: Throwable) {
-                isLoading.value = false
-            }
-        })
+        }
     }
 
 
@@ -50,6 +39,17 @@ class BreakingNewsViewModel : ViewModel() {
         repository.insert(article)
     }
 
+    private fun getArticle(): LiveData<List<Article>>? = repository.getAllArticle()
+
+    suspend fun replaceArticle(article: Article) {
+        repository.replaceArticle(article)
+    }
+
+
+
+    suspend fun updateNews(article: Article) {
+        repository.updateNews(article)
+    }
 
 }
 
