@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentFavoritesBinding
+import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.FavoritesViewModel
 import kotlinx.coroutines.launch
 
@@ -35,13 +37,21 @@ class FavoritesFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
 
-        adapter = BreakingNewsAdapter { position ->
+        adapter = BreakingNewsAdapter { position, isFavorites ->
             val currentNews = adapter.currentList[position]
-            val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
-            lifecycleScope.launch {
-                viewModel.updateNews(updatedArticle)
+            if (isFavorites) {
+                val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
+                lifecycleScope.launch {
+                    viewModel.updateNews(updatedArticle)
+                }
+            } else {
+                val data =
+                    ShowNews(currentNews.title, currentNews.urlToImage, currentNews.description)
+                val action = FavoritesFragmentDirections.actionFavoritesFragmentToShowFragment(data)
+                Navigation.findNavController(view).navigate(action)
             }
         }
+
         viewModel.favorites?.observe(viewLifecycleOwner) {
             adapter.submitList(it.toList())
         }

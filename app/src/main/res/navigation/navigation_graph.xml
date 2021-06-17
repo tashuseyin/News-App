@@ -9,15 +9,37 @@
         android:id="@+id/breakingFragment"
         android:name="com.example.newsapp.ui.BreakingFragment"
         android:label="@string/breaking"
-        tools:layout="@layout/fragment_breaking" />
+        tools:layout="@layout/fragment_breaking" >
+        <action
+            android:id="@+id/action_breakingFragment_to_showFragment"
+            app:destination="@id/showFragment" />
+    </fragment>
     <fragment
         android:id="@+id/allNewsFragment"
         android:name="com.example.newsapp.ui.AllNewsFragment"
         android:label="@string/all_news"
-        tools:layout="@layout/fragment_all_news" />
+        tools:layout="@layout/fragment_all_news" >
+        <action
+            android:id="@+id/action_allNewsFragment_to_showFragment"
+            app:destination="@id/showFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.newsapp.ui.FavoritesFragment"
         android:label="@string/favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_showFragment"
+            app:destination="@id/showFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showFragment"
+        android:name="com.example.newsapp.ui.ShowFragment"
+        android:label="fragment_show"
+        tools:layout="@layout/fragment_show" >
+
+        <argument
+            android:name="showNews"
+            app:argType="com.example.newsapp.model.ShowNews" />
+    </fragment>
 </navigation>

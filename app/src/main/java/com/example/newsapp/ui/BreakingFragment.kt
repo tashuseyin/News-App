@@ -8,9 +8,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentBreakingBinding
+import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.BreakingNewsViewModel
 import kotlinx.coroutines.launch
 
@@ -18,8 +19,6 @@ import kotlinx.coroutines.launch
 class BreakingFragment : Fragment() {
 
     private lateinit var adapter: BreakingNewsAdapter
-    private lateinit var recyclerView: RecyclerView
-
     private lateinit var viewModel: BreakingNewsViewModel
     private var _binding: FragmentBreakingBinding? = null
     private val binding get() = _binding!!
@@ -36,27 +35,41 @@ class BreakingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = binding.recyclerview
-
         viewModel = ViewModelProvider(this).get(BreakingNewsViewModel::class.java)
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.LoadingText.isVisible = it
-            binding.LoadingProgressbar.isVisible = it
-        }
-        viewModel.getBreakingNews()
-
-        adapter = BreakingNewsAdapter { position ->
+        adapter = BreakingNewsAdapter { position, isFavorites ->
             val currentNews = adapter.currentList[position]
-            val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
-            lifecycleScope.launch {
-                viewModel.updateNews(updatedArticle)
+            if (isFavorites) {
+                val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
+                lifecycleScope.launch {
+                    viewModel.updateNews(updatedArticle)
+                }
+            } else {
+                val data =
+                    ShowNews(currentNews.title, currentNews.urlToImage, currentNews.description)
+                val action = BreakingFragmentDirections.actionBreakingFragmentToShowFragment(data)
+                Navigation.findNavController(view).navigate(action)
             }
         }
-        viewModel.news?.observe(viewLifecycleOwner) {
-            adapter.submitList(it.toList())
+        binding.recyclerview.adapter = adapter
+
+        viewModel.apply {
+            isLoading.observe(viewLifecycleOwner) {
+                    binding.LoadingProgressbar.isVisible = it
+                    binding.LoadingText.isVisible = it
+            }
+            getBreakingNews()
+            news?.observe(viewLifecycleOwner) {
+                adapter.submitList(it.toList())
+            }
+            isRefreshing.observe(viewLifecycleOwner) {
+                binding.swipeRefreshLayout.isRefreshing = it
+            }
         }
-        recyclerView.adapter = adapter
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshData()
+        }
     }
 
     override fun onDestroyView() {

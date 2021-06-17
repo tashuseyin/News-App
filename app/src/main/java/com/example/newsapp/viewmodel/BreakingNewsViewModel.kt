@@ -17,13 +17,19 @@ class BreakingNewsViewModel : ViewModel() {
     val news = _news
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-
+    val isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
+    private var isRequest = false
 
     fun getBreakingNews() {
-
+        if (isRequest) return else isRequest = true
         isLoading.value = true
+        dataRequest()
+    }
+
+    private fun dataRequest() {
         Request.getArticleNews { articleList ->
             isLoading.value = false
+            isRefreshing.value = false
             viewModelScope.launch {
                 articleList?.forEach {
                     insert(it)
@@ -31,6 +37,12 @@ class BreakingNewsViewModel : ViewModel() {
             }
         }
     }
+
+    fun refreshData() {
+        isRefreshing.value = true
+        dataRequest()
+    }
+
 
     suspend fun insert(article: Article) {
         repository.insert(article)
@@ -41,6 +53,7 @@ class BreakingNewsViewModel : ViewModel() {
     suspend fun updateNews(article: Article) {
         repository.updateNews(article)
     }
+
 
 }
 
