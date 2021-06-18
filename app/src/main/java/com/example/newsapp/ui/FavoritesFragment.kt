@@ -46,7 +46,7 @@ class FavoritesFragment : Fragment() {
                 }
             } else {
                 val data =
-                    ShowNews(currentNews.title, currentNews.urlToImage, currentNews.description)
+                    ShowNews(currentNews.title, currentNews.urlToImage, currentNews.content)
                 val action = FavoritesFragmentDirections.actionFavoritesFragmentToShowFragment(data)
                 Navigation.findNavController(view).navigate(action)
             }

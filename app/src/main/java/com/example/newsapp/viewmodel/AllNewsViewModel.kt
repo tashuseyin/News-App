@@ -9,11 +9,11 @@ import com.example.newsapp.model.Article
 import com.example.newsapp.service.BreakingNewsRepository
 import kotlinx.coroutines.launch
 
-class BreakingNewsViewModel : ViewModel() {
+class AllNewsViewModel : ViewModel() {
 
     private val repository = BreakingNewsRepository
 
-    private var _news: LiveData<List<Article>>? = isLatestNews()
+    private var _news: LiveData<List<Article>>? = getAllArticle()
     val news = _news
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -42,7 +42,6 @@ class BreakingNewsViewModel : ViewModel() {
         dataRequest()
     }
 
-
     suspend fun insert(article: Article) {
         repository.insert(article)
     }
@@ -51,8 +50,7 @@ class BreakingNewsViewModel : ViewModel() {
         repository.updateNews(article)
     }
 
-    private fun isLatestNews(): LiveData<List<Article>>? = repository.isLatestNews()
+    private fun getAllArticle(): LiveData<List<Article>>? = repository.getAllArticle()
+
 
 }
-
-

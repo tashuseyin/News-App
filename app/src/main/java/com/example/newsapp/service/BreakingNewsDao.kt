@@ -20,4 +20,6 @@ interface BreakingNewsDao {
     @Update
     suspend fun updateNews(article: Article)
 
+    @Query("SELECT * FROM Article ORDER BY publishedAt DESC LIMIT 10")
+    fun isLatestNews(): LiveData<List<Article>>
 }

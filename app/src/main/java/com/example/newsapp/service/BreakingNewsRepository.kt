@@ -22,4 +22,6 @@ object BreakingNewsRepository {
 
     suspend fun updateNews(article: Article) = breakingNewsDao?.updateNews(article)
 
+    fun isLatestNews()= breakingNewsDao?.isLatestNews()
+
 }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigation: BottomNavigationView = binding.bottomNavigaiton
         val navController = findNavController(R.id.navigation_fragment_activity_main)
-        val appBarConfiguration = AppBarConfiguration.Builder(
+        AppBarConfiguration.Builder(
             R.id.breakingFragment,
             R.id.allNewsFragment,
             R.id.favoritesFragment

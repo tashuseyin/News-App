@@ -9,7 +9,7 @@ class FavoritesViewModel : ViewModel() {
 
     private val repository = BreakingNewsRepository
 
-    var _favorites: LiveData<List<Article>>? = favoriteBreaking()
+    private var _favorites: LiveData<List<Article>>? = favoriteBreaking()
     val favorites = _favorites
 
     private fun favoriteBreaking() = repository.favoriteArticle()
