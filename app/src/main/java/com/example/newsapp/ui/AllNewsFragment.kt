@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentAllNewsBinding
+import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.AllNewsViewModel
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,14 @@ class AllNewsFragment : Fragment() {
                     viewModel.updateNews(updatedArticle)
                 }
             } else {
-                val action = AllNewsFragmentDirections.actionAllNewsFragmentToShowFragment(currentNews.url)
+                val data = ShowNews(
+                    currentNews.urlToImage,
+                    currentNews.title,
+                    currentNews.description,
+                    currentNews.url
+                )
+                val action =
+                    AllNewsFragmentDirections.actionAllNewsFragmentToDetailNewsFragment(data)
                 Navigation.findNavController(view).navigate(action)
             }
         }

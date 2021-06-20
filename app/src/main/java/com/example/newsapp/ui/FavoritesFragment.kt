@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentFavoritesBinding
+import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.FavoritesViewModel
 import kotlinx.coroutines.launch
 
@@ -44,7 +45,13 @@ class FavoritesFragment : Fragment() {
                     viewModel.updateNews(updatedArticle)
                 }
             } else {
-                val action = FavoritesFragmentDirections.actionFavoritesFragmentToShowFragment(currentNews.url)
+                val data = ShowNews(
+                    currentNews.urlToImage,
+                    currentNews.title,
+                    currentNews.description,
+                    currentNews.url
+                )
+                val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailNewsFragment(data)
                 Navigation.findNavController(view).navigate(action)
             }
         }

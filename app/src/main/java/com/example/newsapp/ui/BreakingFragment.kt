@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentBreakingBinding
+import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.BreakingNewsViewModel
 import kotlinx.coroutines.launch
 
@@ -44,8 +45,14 @@ class BreakingFragment : Fragment() {
                     viewModel.updateNews(updatedArticle)
                 }
             } else {
+                val data = ShowNews(
+                    currentNews.urlToImage,
+                    currentNews.title,
+                    currentNews.description,
+                    currentNews.url
+                )
                 val action =
-                    BreakingFragmentDirections.actionBreakingFragmentToShowFragment(currentNews.url)
+                    BreakingFragmentDirections.actionBreakingFragmentToDetailNewsFragment(data)
                 Navigation.findNavController(view).navigate(action)
             }
         }

@@ -11,8 +11,8 @@
         android:label="@string/breaking"
         tools:layout="@layout/fragment_breaking" >
         <action
-            android:id="@+id/action_breakingFragment_to_showFragment"
-            app:destination="@id/showFragment" />
+            android:id="@+id/action_breakingFragment_to_detailNewsFragment"
+            app:destination="@id/detailNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/allNewsFragment"
@@ -20,8 +20,8 @@
         android:label="@string/all_news"
         tools:layout="@layout/fragment_all_news" >
         <action
-            android:id="@+id/action_allNewsFragment_to_showFragment"
-            app:destination="@id/showFragment" />
+            android:id="@+id/action_allNewsFragment_to_detailNewsFragment"
+            app:destination="@id/detailNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -29,8 +29,8 @@
         android:label="@string/favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
-            android:id="@+id/action_favoritesFragment_to_showFragment"
-            app:destination="@id/showFragment" />
+            android:id="@+id/action_favoritesFragment_to_detailNewsFragment"
+            app:destination="@id/detailNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/showFragment"
@@ -43,4 +43,17 @@
             app:argType="string"
             android:defaultValue="null" />
     </fragment>
+    <fragment
+        android:id="@+id/detailNewsFragment"
+        android:name="com.example.newsapp.ui.DetailNewsFragment"
+        android:label="fragment_detail_news"
+        tools:layout="@layout/fragment_detail_news" >
+        <action
+            android:id="@+id/action_detailNewsFragment_to_showFragment"
+            app:destination="@id/showFragment" />
+        <argument
+            android:name="detailNews"
+            app:argType="com.example.newsapp.model.ShowNews" />
+    </fragment>
+
 </navigation>
