@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.newsapp.adapter.BreakingNewsAdapter
 import com.example.newsapp.databinding.FragmentBreakingBinding
-import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.BreakingNewsViewModel
 import kotlinx.coroutines.launch
 
@@ -45,9 +44,8 @@ class BreakingFragment : Fragment() {
                     viewModel.updateNews(updatedArticle)
                 }
             } else {
-                val data =
-                    ShowNews(currentNews.title, currentNews.urlToImage, currentNews.description)
-                val action = BreakingFragmentDirections.actionBreakingFragmentToShowFragment(data)
+                val action =
+                    BreakingFragmentDirections.actionBreakingFragmentToShowFragment(currentNews.url)
                 Navigation.findNavController(view).navigate(action)
             }
         }
@@ -55,8 +53,8 @@ class BreakingFragment : Fragment() {
 
         viewModel.apply {
             isLoading.observe(viewLifecycleOwner) {
-                    binding.LoadingProgressbar.isVisible = it
-                    binding.LoadingText.isVisible = it
+                binding.LoadingProgressbar.isVisible = it
+                binding.LoadingText.isVisible = it
             }
             getBreakingNews()
             news?.observe(viewLifecycleOwner) {

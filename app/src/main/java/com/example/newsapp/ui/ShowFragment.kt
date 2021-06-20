@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.example.newsapp.databinding.FragmentShowBinding
 
 
@@ -28,13 +28,10 @@ class ShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
-        binding.showNewsTitle.text = args.showNews.title
-        binding.showNewsContent.text = args.showNews.content
-        Glide.with(binding.showNewsImage).load(args.showNews.image).into(binding.showNewsImage)
-
+        binding.webView.apply {
+            webViewClient = WebViewClient()
+            loadUrl(args.url)
+        }
     }
 
 
