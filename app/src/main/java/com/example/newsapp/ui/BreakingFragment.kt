@@ -61,7 +61,6 @@ class BreakingFragment : Fragment() {
         viewModel.apply {
             isLoading.observe(viewLifecycleOwner) {
                 binding.LoadingProgressbar.isVisible = it
-                binding.LoadingText.isVisible = it
             }
             getBreakingNews()
             news?.observe(viewLifecycleOwner) {

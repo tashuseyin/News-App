@@ -22,6 +22,7 @@ class BreakingNewsViewModel : ViewModel() {
 
     fun getBreakingNews() {
         if (isRequest) return else isRequest = true
+        isLoading.value = true
         dataRequest()
     }
 
