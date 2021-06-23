@@ -15,13 +15,12 @@ object BreakingNewsRepository {
         breakingNewsDao?.insertBreakingNews(article)
     }
 
-    fun getAllArticle(): LiveData<List<Article>>? =
-        breakingNewsDao?.getAllBreakingNews()
-
     fun favoriteArticle() = breakingNewsDao?.isFavoriteBreakingNews()
 
     suspend fun updateNews(article: Article) = breakingNewsDao?.updateNews(article)
 
     fun isLatestNews()= breakingNewsDao?.isLatestNews()
+
+    fun getAllNews() = breakingNewsDao?.getAllNews()
 
 }

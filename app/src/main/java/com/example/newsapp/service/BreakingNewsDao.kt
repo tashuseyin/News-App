@@ -1,6 +1,7 @@
 package com.example.newsapp.service
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.newsapp.model.Article
 
@@ -11,11 +12,14 @@ interface BreakingNewsDao {
     suspend fun insertBreakingNews(article: Article)
 
     @Query("SELECT * FROM Article")
-    fun getAllBreakingNews() : LiveData<List<Article>>
+    fun getAllBreakingNews(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Article")
+    fun getAllNews(): PagingSource<Int, Article>
 
 
     @Query("SELECT * FROM Article WHERE isFavorites")
-    fun  isFavoriteBreakingNews() : LiveData<List<Article>>
+    fun isFavoriteBreakingNews(): LiveData<List<Article>>
 
     @Update
     suspend fun updateNews(article: Article)
