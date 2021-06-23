@@ -2,12 +2,12 @@ package com.example.newsapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import com.example.newsapp.databinding.BreakingRowitemBinding
 import com.example.newsapp.model.Article
 
-class BreakingNewsAdapter(private val onItemClickListener: (Int, Boolean) -> Unit) :
-    ListAdapter<Article, BreakingNewsViewHolder>(DiffCallback()) {
+class BreakingNewsPagingAdapter(private val onItemClickListener: (Int, Boolean) -> Unit) :
+    PagingDataAdapter<Article, BreakingNewsViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
         val binding =
@@ -16,7 +16,7 @@ class BreakingNewsAdapter(private val onItemClickListener: (Int, Boolean) -> Uni
     }
 
     override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        getItem(position)?.let { holder.bind(it, onItemClickListener) }
     }
 
     override fun onBindViewHolder(
@@ -28,14 +28,17 @@ class BreakingNewsAdapter(private val onItemClickListener: (Int, Boolean) -> Uni
             super.onBindViewHolder(holder, position, payloads)
         } else {
             if (payloads[0] == true) {
-                holder.bindChangedFavorite(
-                    getItem(position),
-                    onItemClickListener,
-                    getItem(position).isFavorites
-                )
+                getItem(position)?.let {
+                    holder.bindChangedFavorite(
+                        it,
+                        onItemClickListener,
+                        getItem(position)?.isFavorites == true
+                    )
+                }
             }
         }
     }
 }
+
 
 

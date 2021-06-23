@@ -23,5 +23,7 @@ object Request {
 
     }
 
+    suspend fun getArticleNews2(page: Int = 1, pageSize: Int = 20) = RetrofitClient.api.getBreakingNews2(page, pageSize)
+
 
 }

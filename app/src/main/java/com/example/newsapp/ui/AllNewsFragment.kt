@@ -9,15 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.example.newsapp.adapter.BreakingNewsAdapter
+import com.example.newsapp.adapter.BreakingNewsPagingAdapter
 import com.example.newsapp.databinding.FragmentAllNewsBinding
 import com.example.newsapp.model.ShowNews
 import com.example.newsapp.viewmodel.AllNewsViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AllNewsFragment : Fragment() {
 
-    private lateinit var adapter: BreakingNewsAdapter
+    private lateinit var adapter: BreakingNewsPagingAdapter
     private lateinit var viewModel: AllNewsViewModel
     private var _binding: FragmentAllNewsBinding? = null
     private val binding get() = _binding!!
@@ -30,30 +32,43 @@ class AllNewsFragment : Fragment() {
         return binding.root
     }
 
+    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(AllNewsViewModel::class.java)
 
-        adapter = BreakingNewsAdapter { position, isFavorites ->
-            val currentNews = adapter.currentList[position]
+
+
+        adapter = BreakingNewsPagingAdapter { position, isFavorites ->
+            val currentNews = adapter.snapshot()[position]
             if (isFavorites) {
-                val updatedArticle = currentNews.copy(isFavorites = !currentNews.isFavorites)
+                val updatedArticle = currentNews?.copy(isFavorites = !currentNews.isFavorites)
                 lifecycleScope.launch {
-                    viewModel.updateNews(updatedArticle)
+                    if (updatedArticle != null) {
+                        viewModel.updateNews(updatedArticle)
+                    }
                 }
             } else {
-                val data = ShowNews(
-                    currentNews.urlToImage,
-                    currentNews.title,
-                    currentNews.description,
-                    currentNews.url
-                )
-                val action =
-                    AllNewsFragmentDirections.actionAllNewsFragmentToDetailNewsFragment(data)
-                Navigation.findNavController(view).navigate(action)
+                currentNews?.let {
+                    val data = ShowNews(
+                        currentNews.urlToImage,
+                        currentNews.title,
+                        currentNews.description,
+                        currentNews.url
+                    )
+                    val action =
+                        AllNewsFragmentDirections.actionAllNewsFragmentToDetailNewsFragment(data)
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.listData.collect {
+                adapter.submitData(it)
+            }
+        }
+
         binding.recyclerview.adapter = adapter
 
         viewModel.apply {
@@ -61,9 +76,6 @@ class AllNewsFragment : Fragment() {
                 binding.LoadingProgressbar.isVisible = it
             }
             getBreakingNews()
-            news?.observe(viewLifecycleOwner) {
-                adapter.submitList(it.toList())
-            }
             isRefreshing.observe(viewLifecycleOwner) {
                 binding.swipeRefreshLayout.isRefreshing = it
             }

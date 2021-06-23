@@ -37,6 +37,7 @@ class BreakingFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(BreakingNewsViewModel::class.java)
 
+
         adapter = BreakingNewsAdapter { position, isFavorites ->
             val currentNews = adapter.currentList[position]
             if (isFavorites) {
@@ -56,12 +57,14 @@ class BreakingFragment : Fragment() {
                 Navigation.findNavController(view).navigate(action)
             }
         }
+
         binding.recyclerview.adapter = adapter
 
         viewModel.apply {
             isLoading.observe(viewLifecycleOwner) {
                 binding.LoadingProgressbar.isVisible = it
             }
+
             getBreakingNews()
             news?.observe(viewLifecycleOwner) {
                 adapter.submitList(it.toList())

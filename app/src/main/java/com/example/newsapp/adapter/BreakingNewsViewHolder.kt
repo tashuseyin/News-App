@@ -22,11 +22,11 @@ class BreakingNewsViewHolder(private val binding: BreakingRowitemBinding) :
         }
 
         binding.favoriteButton.setOnClickListener {
-            onItemClickListener(adapterPosition, true)
+            onItemClickListener(bindingAdapterPosition, true)
         }
 
         binding.root.setOnClickListener {
-            onItemClickListener(adapterPosition, false)
+            onItemClickListener(bindingAdapterPosition, false)
         }
 
     }
@@ -45,10 +45,9 @@ class BreakingNewsViewHolder(private val binding: BreakingRowitemBinding) :
         }
 
         binding.favoriteButton.setOnClickListener {
-            onItemClickListener(adapterPosition, true)
+            onItemClickListener(bindingAdapterPosition, true)
         }
     }
-
 
 }
 
