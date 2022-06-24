@@ -11,9 +11,6 @@ Also fetching data from the network and integrating persisted data in the databa
 
 ## Tech Stack & Open-Source Library
 - Kotlin
-- Flow
-- State Handle
-- Splash Api
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs network data.
 - [Glide](https://github.com/bumptech/glide)
 - Jetpack
